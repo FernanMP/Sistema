@@ -1,7 +1,7 @@
 <?php
 
 $host = getenv('DB_HOST') ?: 'localhost';
-$db = getenv('DB_NAME') ?: 'ara_seguro';
+$db = getenv('DB_NAME') ?: 'ara';
 $user = getenv('DB_USER') ?: 'postgres';
 $pass = getenv('DB_PASS') ?: '';
 $port = getenv('DB_PORT') ?: '5432';
