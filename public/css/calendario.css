@@ -1,0 +1,277 @@
+/* Overrides and custom styles for Calendario */
+body {
+    background: linear-gradient(135deg, #1e3c72, #4a8df8);
+    align-items: flex-start;
+    padding: 30px 20px;
+    height: auto;
+    min-height: 100vh;
+}
+
+.calendar-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card-calendar {
+    width: 100%;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+}
+
+.calendar-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.header-titles h1 {
+    font-size: 28px;
+    color: #1e293b;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.header-titles .subtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+}
+
+
+
+.saved-schedules {
+    background: #f8fafc;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.saved-schedules label {
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.saved-schedules select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    outline: none;
+    min-width: 200px;
+}
+
+/* Month Controls */
+.month-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.month-controls h2 {
+    font-size: 24px;
+    color: #1e3c72;
+    min-width: 250px;
+    text-align: center;
+    margin: 0;
+    text-transform: capitalize;
+}
+
+.btn-icon {
+    background: #f1f5f9;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+    color: #334155;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    transform: scale(1.05);
+}
+
+.btn-today {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 10px;
+}
+
+.btn-today:hover {
+    background: #bfdbfe;
+}
+
+/* Grid System */
+.calendar-wrapper {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.calendar-grid-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.day-name {
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #475569;
+    letter-spacing: 1px;
+}
+
+.calendar-grid-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(130px, auto);
+    background: #e2e8f0;
+    gap: 1px; /* Borders via gap */
+}
+
+.day-cell {
+    background: white;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.15s;
+}
+
+.day-cell:hover {
+    background: #f8fafc;
+}
+
+.day-cell.other-month {
+    background: #fbfcfd;
+    opacity: 0.6;
+}
+
+.day-cell.today {
+    background: #eff6ff;
+}
+
+.day-cell.today .day-number {
+    background: #3b82f6;
+    color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.day-number {
+    font-size: 15px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 10px;
+    align-self: flex-start;
+}
+
+.events {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+}
+
+/* Events Cards */
+.event {
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: white;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    transition: transform 0.1s;
+    cursor: default;
+}
+
+.event:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.12);
+}
+
+.event-sub {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 400;
+    margin-top: 2px;
+    opacity: 0.9;
+}
+
+/* Vibrant colors for classes */
+.bg-color-0 { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.bg-color-1 { background: linear-gradient(135deg, #f97316, #ea580c); }
+.bg-color-2 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.bg-color-3 { background: linear-gradient(135deg, #84cc16, #65a30d); }
+.bg-color-4 { background: linear-gradient(135deg, #10b981, #059669); }
+.bg-color-5 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.bg-color-6 { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.bg-color-7 { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+.bg-color-8 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+.bg-color-9 { background: linear-gradient(135deg, #d946ef, #c026d3); }
+.bg-color-10 { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+
+.empty-state { text-align:center; padding:50px 20px; color:#9ca3af; background:#f8fafc; border-radius:14px; border: 2px dashed #e2e8f0; }
+.empty-state .big { font-size:48px; margin-bottom:15px; }
+.empty-state p { font-size:15px; font-weight: 500; }
+
+@media (max-width: 900px) {
+    .calendar-grid-days {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+    }
+    .calendar-grid-header {
+        display: none;
+    }
+    .day-cell {
+        min-height: 80px;
+    }
+    .day-cell.other-month {
+        display: none; /* Hide empty boxes on mobile list view */
+    }
+    .day-number {
+        font-size: 18px;
+    }
+    .day-number::before {
+        content: attr(data-mobile-day) " ";
+        color: #94a3b8;
+        font-weight: 500;
+        margin-right: 5px;
+    }
+}

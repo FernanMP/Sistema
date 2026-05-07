@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Control de Asistencia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <link rel="stylesheet" href="css/css.css">
+    <style>
+        :root {
+            --morado: #7c3aed;
+            --morado-dark: #4c1d95;
+            --morado-bg: #f5f3ff;
+            --verde: #059669;
+            --verde-bg: #ecfdf5;
+            --rojo: #dc2626;
+            --rojo-bg: #fef2f2;
+            --gris-texto: #374151;
+            --gris-borde: #e5e7eb;
+            --gris-bg: #f9fafb;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--morado);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 18px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .filtros-panel {
+            background: var(--morado-bg);
+            border: 1px solid #ddd6fe;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin: 20px 0;
+        }
+
+        .filtros-panel h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--morado-dark);
+            margin-bottom: 14px;
+        }
+
+        .filtros-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .filtro-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filtro-grupo label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6d28d9;
+        }
+
+        .filtro-grupo input {
+            padding: 9px 12px;
+            border: 1px solid #c4b5fd;
+            border-radius: 9px;
+            font-size: 14px;
+            background: white;
+            color: var(--gris-texto);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .filtro-grupo input:focus {
+            border-color: var(--morado);
+        }
+
+        .custom-select {
+            padding: 9px 12px;
+            border: 1px solid #c4b5fd;
+            border-radius: 9px;
+            font-size: 14px;
+            background: white;
+            color: var(--gris-texto);
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.15s;
+        }
+
+        .custom-select:focus {
+            border-color: var(--morado);
+        }
+
+        .custom-select:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+            color: #9ca3af;
+        }
+
+        .btn-cargar {
+            width: 100%;
+            margin-top: 14px;
+            padding: 11px;
+            background: linear-gradient(135deg, var(--morado-dark), var(--morado));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-cargar:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+        }
+
+        .btn-cargar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .voz-panel {
+            background: white;
+            border: 1px solid var(--gris-borde);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+            display: none;
+        }
+
+        .voz-panel.visible {
+            display: block;
+        }
+
+        .voz-panel h3 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .voz-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .voz-row label {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .voz-row select {
+            padding: 7px 11px;
+            border: 1px solid var(--gris-borde);
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+            flex: 1;
+            min-width: 160px;
+            max-width: 280px;
+        }
+
+        .vel-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vel-row input[type=range] {
+            width: 100px;
+            cursor: pointer;
+        }
+
+        .vel-val {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--morado);
+            min-width: 30px;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            background: var(--gris-bg);
+            border: 1px solid var(--gris-borde);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .stat-num.verde {
+            color: var(--verde);
+        }
+
+        .stat-num.rojo {
+            color: var(--rojo);
+        }
+
+        .stat-num.morado {
+            color: var(--morado);
+        }
+
+        .progreso-wrap {
+            margin-bottom: 18px;
+        }
+
+        .progreso-barra {
+            height: 6px;
+            background: var(--gris-borde);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progreso-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--morado), #a78bfa);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progreso-texto {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .controles {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--gris-borde);
+            background: white;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+            font-family: inherit;
+            color: var(--gris-texto);
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--gris-bg);
+            border-color: #d1d5db;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-iniciar {
+            background: linear-gradient(135deg, var(--morado-dark), var(--morado));
+            color: white;
+            border-color: transparent;
+        }
+
+        .btn-iniciar:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .btn-exportar {
+            background: linear-gradient(135deg, #065f46, #059669);
+            color: white;
+            border-color: transparent;
+        }
+
+        .btn-exportar:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .leyendo-card {
+            display: none;
+            align-items: center;
+            gap: 14px;
+            background: var(--morado-bg);
+            border: 1px solid #c4b5fd;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+        }
+
+        .leyendo-card.activo {
+            display: flex;
+        }
+
+        .onda-icono {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            animation: onda 1.4s ease-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes onda {
+            0% {
+                box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.5);
+            }
+
+            70% {
+                box-shadow: 0 0 0 14px rgba(124, 58, 237, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+            }
+        }
+
+        .leyendo-nombre {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--morado-dark);
+        }
+
+        .leyendo-hint {
+            font-size: 12px;
+            color: #7c3aed;
+            margin-top: 3px;
+        }
+
+        .lista-wrap {
+            border: 1px solid var(--gris-borde);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .lista-header {
+            display: none;
+        }
+
+        @media(min-width: 601px) {
+            .lista-header {
+                display: flex;
+                justify-content: space-between;
+                padding: 12px 18px;
+                background: var(--gris-bg);
+                border-bottom: 1px solid var(--gris-borde);
+                font-size: 11px;
+                font-weight: 700;
+                color: #9ca3af;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+            }
+        }
+
+        .alumno-fila {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-bottom: 1px solid #f3f4f6;
+            transition: background 0.2s;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .alumno-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .alumno-fila:last-child {
+            border-bottom: none;
+        }
+
+        .alumno-fila.fila-actual {
+            background: var(--morado-bg);
+        }
+
+        .alumno-fila.fila-presente {
+            background: #f0fdf4;
+        }
+
+        .alumno-fila.fila-ausente {
+            background: var(--rojo-bg);
+            opacity: 0.7;
+        }
+
+        .num-fila {
+            font-size: 12px;
+            color: #d1d5db;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .nombre-alumno {
+            font-size: 14px;
+            color: var(--gris-texto);
+        }
+
+        .alumno-fila.fila-actual .nombre-alumno {
+            font-weight: 700;
+            color: var(--morado-dark);
+        }
+
+        .botones-estado {
+            display: flex;
+            gap: 4px;
+            background: #f3f4f6;
+            padding: 4px;
+            border-radius: 24px;
+        }
+
+        .btn-estado {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: none;
+            background: transparent;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            color: #6b7280;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-estado:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .btn-estado.presente-activo {
+            background: var(--verde);
+            color: white;
+            box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-estado.ausente-activo {
+            background: var(--rojo);
+            color: white;
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+        }
+        
+        .btn-estado.justificado-activo {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+        }
+
+        .export-box {
+            display: none;
+            background: #1e1e2e;
+            color: #cdd6f4;
+            border-radius: 12px;
+            padding: 18px;
+            font-family: 'Courier New', monospace;
+            font-size: 12.5px;
+            white-space: pre;
+            overflow-x: auto;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+
+        #msg-estado {
+            font-size: 13px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+
+        #msg-estado.info {
+            background: var(--morado-bg);
+            color: var(--morado-dark);
+            display: block;
+        }
+
+        #msg-estado.exito {
+            background: var(--verde-bg);
+            color: #065f46;
+            display: block;
+        }
+
+        #msg-estado.error {
+            background: var(--rojo-bg);
+            color: #991b1b;
+            display: block;
+        }
+
+        .estado-vacio {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+        }
+
+        .estado-vacio .icono-grande {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .estado-vacio p {
+            font-size: 14px;
+        }
+
+        @media(max-width:500px) {
+            .filtros-row {
+                grid-template-columns: 1fr;
+            }
+
+            .controles {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+
+            <img src="img/itlac.png" class="logo-bg" alt="ITLAC">
+
+            <a href="../index.html" class="btn-back" style="display: inline-flex; align-items: center; padding: 6px 12px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-weight: bold; text-decoration: none; margin-bottom: 12px; border: 1px solid #bfdbfe; font-size: 14px;">&larr; Volver al Menú</a>
+            <h1>📋 Control de Asistencia</h1>
+            <p class="subtitle">Carga los alumnos desde tus horarios guardados y marca su asistencia manualmente.</p>
+
+            <!-- Filtros BD -->
+            <div class="filtros-panel">
+                <h3>📂 Cargar alumnos desde la base de datos</h3>
+                <div class="filtros-row" style="margin-bottom: 12px;">
+                    <div class="filtro-grupo">
+                        <label>Horario Importado</label>
+                        <select id="sel-horario" class="custom-select">
+                            <option value="">-- Selecciona Horario --</option>
+                        </select>
+                    </div>
+                    <div class="filtro-grupo">
+                        <label>Materia (Grupo)</label>
+                        <select id="sel-materia" disabled class="custom-select">
+                            <option value="">-- Selecciona Materia --</option>
+                        </select>
+                        <input type="hidden" id="inp-grupo">
+                    </div>
+                </div>
+                <div class="filtros-row" style="grid-template-columns: 1fr;">
+                    <div class="filtro-grupo">
+                        <label>Periodo Escolar</label>
+                        <input type="text" id="inp-periodo" placeholder="Ej: 2026-1" maxlength="10">
+                    </div>
+                </div>
+                <button class="btn-cargar" id="btn-cargar">🔍 Buscar y cargar alumnos</button>
+            </div>
+
+            <!-- Mensaje estado -->
+            <div id="msg-estado"></div>
+
+            <!-- Panel de Fecha y Controles Rápidos -->
+            <div class="acciones-panel" id="controles" style="display:none; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; margin-bottom: 18px;">
+                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap; justify-content: space-between;">
+                    <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <label style="font-weight: 600; font-size: 13px; color: var(--morado-dark);">Unidad:</label>
+                            <select id="sel-unidad" class="custom-select" style="width: auto;">
+                                <option value="1">Unidad 1</option>
+                                <option value="2">Unidad 2</option>
+                                <option value="3">Unidad 3</option>
+                                <option value="4">Unidad 4</option>
+                                <option value="5">Unidad 5</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <label style="font-weight: 600; font-size: 13px; color: var(--morado-dark);">Actividad:</label>
+                            <select id="sel-actividad" class="custom-select" style="width: auto; min-width: 140px;">
+                                <option value="">-- Selecciona Actividad --</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <label style="font-weight: 600; font-size: 13px; color: var(--morado-dark);">Fecha (opcional):</label>
+                            <input type="date" id="inp-fecha" class="custom-select" style="width: auto;">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-iniciar" id="btn-marcar-todos" style="background: linear-gradient(135deg, #059669, #10b981);">✓ Marcar todos Presentes</button>
+                        <button class="btn btn-iniciar" id="btn-guardar" style="background: linear-gradient(135deg, var(--morado-dark), var(--morado));">💾 Guardar Asistencia</button>
+                        <button class="btn" id="btn-exportar">📋 Exportar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-bar" id="stats-bar" style="display:none; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px;">
+                <div class="stat-card">
+                    <div class="stat-num morado" id="stat-total">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num verde" id="stat-presentes">0</div>
+                    <div class="stat-label">Presentes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num rojo" id="stat-ausentes">0</div>
+                    <div class="stat-label">Ausentes</div>
+                </div>
+            </div>
+
+            <!-- Lista de alumnos -->
+            <div id="contenedor-lista">
+                <div class="estado-vacio">
+                    <div class="icono-grande">🎓</div>
+                    <p>Ingresa el grupo y periodo para cargar los alumnos</p>
+                </div>
+            </div>
+
+            <!-- Exportación -->
+            <pre class="export-box" id="export-box"></pre>
+
+        </div>
+    </div>
+
+    <script src="js/pase_lista.js"></script>
+</body>
+
+</html>
+

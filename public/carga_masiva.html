@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carga Masiva de Alumnos - ITLAC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <link rel="stylesheet" href="css/css_upload.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <img src="img/itlac.png" class="logo-bg" alt="ITLAC">
+
+        <a href="../index.html" class="btn-back" style="display: inline-flex; align-items: center; padding: 6px 12px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-weight: bold; text-decoration: none; margin-bottom: 12px; border: 1px solid #bfdbfe; font-size: 14px;">&larr; Volver al Menú</a>
+        <div class="header-acciones">
+            <h1>Carga Masiva de Alumnos</h1>
+        </div>
+
+        <p class="subtitle">Sube un archivo TXT con los datos de los alumnos</p>
+
+        <div class="info-panel">
+            <p><strong>Formato del archivo TXT:</strong></p>
+            <pre class="formato-ejemplo">username,firstname,email
+u200000,JUAN MENDEZ,itlac200000@lcardenas.tecnm.mx</pre>
+            <ul class="requisitos">
+                <li><strong>username:</strong> Número de control (ej: u200000, A001)</li>
+                <li><strong>firstname:</strong> Nombre completo del alumno</li>
+                <li><strong>email:</strong> Correo institucional</li>
+                <li>Archivo de texto plano (.txt) con codificación UTF-8</li>
+                <li>Máximo <strong>50 registros</strong> por archivo · Tamaño máximo: 2 MB</li>
+            </ul>
+        </div>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+
+            <input type="hidden" name="csrf_token" id="csrf_token" value="">
+
+            <div class="filtros-panel" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                <h3 style="font-size: 14px; color: #1e293b; margin-bottom: 12px; margin-top: 0;">📍 Asignar alumnos a:</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                    <div>
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Horario Guardado</label>
+                        <select id="sel-horario" class="custom-select" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
+                            <option value="">-- Selecciona Horario --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Materia (Grupo)</label>
+                        <select id="sel-materia" disabled class="custom-select" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px;">
+                            <option value="">-- Selecciona Materia --</option>
+                        </select>
+                        <input type="hidden" name="grupo_default" id="grupo_default">
+                        <input type="hidden" name="materia_default" id="materia_default">
+                    </div>
+                </div>
+                <div>
+                    <label style="font-size: 12px; font-weight: 600; color: #475569; display: block; margin-bottom: 4px;">Periodo Escolar</label>
+                    <input type="text" name="periodo_default" id="periodo_default" placeholder="Ej: 2026-1" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;" maxlength="10">
+                </div>
+            </div>
+
+            <div class="upload-area" id="dropZone">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text" id="dropLabel">
+                    Arrastra tu archivo aquí o haz clic para seleccionar
+                </div>
+                <div class="upload-hint">Solo archivos .txt · Máx 50 registros · 2 MB</div>
+                <input type="file" id="fileInput" name="archivo" accept=".txt" style="display:none;">
+            </div>
+
+            <div id="fileInfo" class="file-info" style="display:none;"></div>
+
+            <div id="progressContainer" class="progress-container" style="display:none;">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="progress-text" id="progressText">Procesando archivo...</div>
+            </div>
+
+            <button type="submit" id="btnUpload" class="btn-primario" disabled>
+                Subir y procesar archivo
+            </button>
+        </form>
+
+        <div id="previewContainer" class="preview-container" style="display:none;">
+            <div class="preview-header">
+                <h3>Vista previa (primeros 5 registros)</h3>
+                <button type="button" class="btn-toggle" id="togglePreview">▼</button>
+            </div>
+            <pre id="jsonPreview" class="json-preview"></pre>
+        </div>
+
+        <div id="resultado" class="resultado"></div>
+
+        <div class="download-example">
+            <a href="#" id="downloadTemplate" class="example-link">
+                📥 Descargar plantilla de ejemplo
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/js_upload.js"></script>
+</body>
+</html>
+

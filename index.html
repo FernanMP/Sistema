@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Escolar ITLAC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/css/css.css">
+    <style>
+        .menu-opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .menu-boton {
+            display: block;
+            padding: 18px 20px;
+            background: linear-gradient(135deg, #1e40af, #2563eb);
+            color: white;
+            text-decoration: none;
+            border-radius: 14px;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .menu-boton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
+        }
+
+        .menu-boton.secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .menu-boton.secondary:hover {
+            box-shadow: 0 10px 25px rgba(75, 85, 99, 0.45);
+        }
+
+        .menu-boton.password {
+            background: linear-gradient(135deg, #065f46, #059669);
+        }
+
+        .menu-boton.password:hover {
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.45);
+        }
+
+        .badge {
+            display: inline-block;
+            background: #fbbf24;
+            color: #1e3c72;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+
+            <img src="public/img/itlac.png" class="logo-bg" alt="ITLAC">
+
+            <h1>Sistema Escolar ITLAC</h1>
+            <p class="subtitle">Actividades "Desarrollo de Software Seguro"</p>
+
+            <div class="menu-opciones">
+
+                <a href="public/carga_masiva.html" class="menu-boton"
+                    style="background: linear-gradient(135deg, #b45309, #d97706);">
+                    📁 Carga Masiva <span class="badge">TXT</span>
+                </a>
+
+                <a href="public/pase_lista.html" class="menu-boton"
+                    style="background: linear-gradient(135deg, #7722BF, #9527F5);">
+                    📢 Pase de lista <span class="badge">NUEVO</span>
+                </a>
+
+                <a href="public/horarios.html" class="menu-boton"
+                    style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">
+                    📅 Captura de Horarios <span class="badge">EXCEL</span>
+                </a>
+
+                <a href="public/calendario.html" class="menu-boton"
+                    style="background: linear-gradient(135deg, #6366f1, #4338ca);">
+                    🗓️ Calendario Escolar <span class="badge">NUEVO</span>
+                </a>
+
+                <a href="public/actividades.html" class="menu-boton"
+                    style="background: linear-gradient(135deg, #10b981, #047857);">
+                    ✅ Configurar Actividades <span class="badge">NUEVO</span>
+                </a>
+
+                <a href="public/calificaciones.html" class="menu-boton"
+                    style="background: linear-gradient(135deg, #f59e0b, #b45309);">
+                    📝 Captura de Calificaciones <span class="badge">NUEVO</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

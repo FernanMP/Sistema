@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendario Escolar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/css.css">
+    <link rel="stylesheet" href="css/calendario.css">
+</head>
+<body>
+
+<div class="container-wide calendar-container">
+    <div class="card card-calendar">
+
+        <!-- HEADER Y CONTROLES -->
+        <div class="calendar-header-row">
+            <div class="header-titles">
+                <a href="../index.html" class="btn-back" style="display: inline-flex; align-items: center; padding: 6px 12px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-weight: bold; text-decoration: none; margin-bottom: 12px; border: 1px solid #bfdbfe; font-size: 14px;">&larr; Volver al Menú</a>
+                <h1>🗓️ Mi Calendario</h1>
+                <p class="subtitle">Visualiza tu horario como eventos del mes</p>
+            </div>
+
+            <!-- Selector de horarios guardados -->
+            <div class="saved-schedules">
+                <label for="scheduleSelect">Horario:</label>
+                <select id="scheduleSelect" onchange="onSelectSchedule()">
+                    <option value="">-- Selecciona un Horario --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- CONTROLES DE MES -->
+        <div class="month-controls">
+            <button class="btn-icon" id="btnPrevMonth" onclick="changeMonth(-1)">❮</button>
+            <h2 id="currentMonthLabel">Mes Año</h2>
+            <button class="btn-icon" id="btnNextMonth" onclick="changeMonth(1)">❯</button>
+            <button class="btn-small btn-today" onclick="goToday()">Hoy</button>
+        </div>
+
+        <!-- CALENDARIO GRID -->
+        <div class="calendar-wrapper" id="calendarWrapper" style="display:none;">
+            <div class="calendar-grid-header">
+                <div class="day-name">DOM</div>
+                <div class="day-name">LUN</div>
+                <div class="day-name">MAR</div>
+                <div class="day-name">MIE</div>
+                <div class="day-name">JUE</div>
+                <div class="day-name">VIE</div>
+                <div class="day-name">SAB</div>
+            </div>
+
+            <!-- Días del mes generados por JS -->
+            <div id="calendarDays" class="calendar-grid-days">
+                <!-- Los días se insertarán aquí -->
+            </div>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+            <div class="big">📅</div>
+            <p>Selecciona un horario para ver el calendario</p>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/calendario.js"></script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Actividades y Criterios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Estilos base del sistema -->
+    <link rel="stylesheet" href="css/css.css">
+    <!-- Estilos específicos -->
+    <link rel="stylesheet" href="css/actividades.css">
+</head>
+<body>
+
+<div class="container-wide">
+    <div class="card card-wide">
+
+        <div class="header-row">
+            <div>
+                <a href="../index.html" class="btn-back" style="display: inline-flex; align-items: center; padding: 6px 12px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-weight: bold; text-decoration: none; margin-bottom: 12px; border: 1px solid #bfdbfe; font-size: 14px;">&larr; Volver al Menú</a>
+                <h1>✅ Evaluación y Actividades</h1>
+                <p class="subtitle">
+                    Configura las actividades, puntos y fechas de entrega por materia y unidad.
+                </p>
+            </div>
+            
+            <div class="points-summary" id="pointsSummary">
+                <span class="label">Puntos Unidad</span>
+                <span class="value" id="totalPoints">0</span>
+            </div>
+        </div>
+
+        <div class="config-panel">
+            <div class="form-group">
+                <label for="selectMateria">Materia</label>
+                <select id="selectMateria" onchange="loadConfig()">
+                    <option value="" disabled selected>-- Selecciona Materia --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="selectUnidad">Unidad / Parcial</label>
+                <select id="selectUnidad" onchange="loadConfig()">
+                    <option value="1">Unidad 1</option>
+                    <option value="2">Unidad 2</option>
+                    <option value="3">Unidad 3</option>
+                    <option value="4">Unidad 4</option>
+                    <option value="5">Unidad 5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="asistenciaPeso">Valor Asistencia (%)</label>
+                <input type="number" id="asistenciaPeso" value="10" min="0" max="100" style="width: 120px; padding: 8px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;">
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn-primary" onclick="handleAddActivity()">➕ Agregar Actividad</button>
+            <button class="btn-success" onclick="saveConfig()">💾 Guardar Configuración</button>
+            <button class="btn-danger" onclick="clearTable()">🗑 Limpiar</button>
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="big">📝</div>
+            <p>No hay actividades configuradas. Agrega una para comenzar.</p>
+        </div>
+
+        <div class="table-wrapper" id="tableContainer">
+            <table class="actividades-table">
+                <thead>
+                    <tr>
+                        <th width="35%">Nombre de la Actividad</th>
+                        <th width="15%">Puntos</th>
+                        <th width="20%">Fecha de Evaluación</th>
+                        <th width="15%" style="text-align: center;">En Equipo</th>
+                        <th width="15%" style="text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyActividades">
+                    <!-- Filas dinámicas aquí -->
+                </tbody>
+            </table>
+        </div>
+
+    </div> <!-- end card -->
+</div> <!-- end container -->
+
+<!-- Contenedor para notificaciones -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/actividades.js"></script>
+
+</body>
+</html>
+
+

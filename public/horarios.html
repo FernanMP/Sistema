@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Horarios & Listas de Asistencia</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Estilos base del sistema -->
+<link rel="stylesheet" href="css/css.css">
+<!-- Estilos específicos de horarios -->
+<link rel="stylesheet" href="css/horarios.css">
+</head>
+<body>
+
+<div class="container-wide">
+  <div class="card card-wide">
+
+    <div class="header-row">
+      <div>
+        <a href="../index.html" class="btn-back" style="display: inline-flex; align-items: center; padding: 6px 12px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-weight: bold; text-decoration: none; margin-bottom: 12px; border: 1px solid #bfdbfe; font-size: 14px;">&larr; Volver al Menú</a>
+        <h1>📋 Captura de Horarios</h1>
+        <p class="subtitle">
+          Copia desde Excel incluyendo el encabezado o carga un horario guardado.
+        </p>
+      </div>
+
+      <!-- Selector de horarios guardados -->
+      <div class="saved-schedules" id="savedSchedulesContainer">
+        <label for="savedSelect">Tus Horarios:</label>
+        <select id="savedSelect" onchange="onSelectSaved()">
+          <option value="">-- Nuevo (Sin Guardar) --</option>
+        </select>
+        <button class="btn-small btn-danger" id="btnDeleteSaved" onclick="deleteSaved()" disabled>🗑 Borrar</button>
+      </div>
+    </div>
+
+    <div class="paste-zone" id="pasteZone">
+      <div class="icon">📥</div>
+      <p>Haz clic aquí y presiona <kbd>Ctrl</kbd>+<kbd>V</kbd></p>
+      <p class="hint">Incluye el encabezado (Clave, Grupo, Materia, Lunes, Martes…)</p>
+    </div>
+
+    <textarea class="raw" id="rawInput" placeholder="O pega el texto tab-separado aquí..."></textarea>
+
+    <div class="actions">
+      <button class="btn-primary"   onclick="processRaw()">⚙️ Procesar texto</button>
+      <button class="btn-secondary" onclick="toggleRaw()">📝 Modo texto</button>
+      <button class="btn-danger"    onclick="clearAll()">🧹 Limpiar Pantalla</button>
+      
+      <!-- BOTONES DE GUARDADO -->
+      <button class="btn-save"      id="btnSave" onclick="saveAsDialog()" style="display:none;">💾 Guardar Nuevo</button>
+      <button class="btn-save2"     id="btnUpdate" onclick="updateSaved()" style="display:none;">💾 Sobrescribir Actual</button>
+
+      <button class="btn-green"     id="btnExport"  onclick="exportJSON()" style="display:none;">📥 Exportar JSON</button>
+      <button class="btn-purple"    id="btnGenerar" onclick="abrirModal()" style="display:none;">📅 Generar listas</button>
+    </div>
+
+    <div class="status-bar" id="statusBar"></div>
+
+    <div class="col-map" id="colMap">
+      <div class="title">🔍 Columnas detectadas:</div>
+      <div class="tags" id="colTags"></div>
+    </div>
+
+    <div id="emptyState" class="empty-state">
+      <div class="big">🗓</div>
+      <p>Tu tabla de horarios aparecerá aquí</p>
+    </div>
+
+    <div id="resultArea" style="display:none">
+      <div class="row-count" id="rowCount"></div>
+      <div class="table-wrapper">
+        <table class="horarios">
+          <thead>
+            <tr>
+              <th class="th-clave">Clave</th>
+              <th class="th-grupo">Grupo</th>
+              <th class="th-materia">Materia</th>
+              <th class="th-day">Lunes</th>
+              <th class="th-day">Martes</th>
+              <th class="th-day">Miércoles</th>
+              <th class="th-day">Jueves</th>
+              <th class="th-day">Viernes</th>
+              <th class="th-day">Sábado</th>
+              <th class="th-unid">Unidades</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══ SECCIÓN LISTAS ══ -->
+    <div id="listasSection" class="listas-section" style="display:none">
+      <h2>📄 Listas de Asistencia</h2>
+      <div class="leyenda">
+        <div class="leyenda-item"><div class="leyenda-dot" style="background:#ffcdd2"></div> Día festivo</div>
+        <div class="leyenda-item"><div class="leyenda-dot" style="background:#fff9c4"></div> Suspensión</div>
+        <div class="leyenda-item"><div class="leyenda-dot" style="background:#e3f2fd"></div> Hover / selección</div>
+      </div>
+      <div id="listasContainer"></div>
+    </div>
+
+  </div> <!-- end card -->
+</div> <!-- end container -->
+
+<!-- ══ MODAL PERIODO ══ -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3>📅 Configurar periodo del semestre</h3>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Fecha inicio del periodo</label>
+        <input type="date" id="fechaInicio">
+      </div>
+      <div class="form-group">
+        <label>Fecha fin del periodo</label>
+        <input type="date" id="fechaFin">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Unidades (parciales)</label>
+        <input type="number" id="numUnidades" value="3" min="1" max="10">
+      </div>
+    </div>
+
+    <div class="section-title">📌 Fechas especiales (festivos / suspensiones)</div>
+    <div class="special-list" id="specialList"></div>
+    <button class="add-special-btn" onclick="addSpecial()">+ Agregar fecha especial</button>
+
+    <div class="modal-actions">
+      <button class="btn-secondary default-btn" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-purple default-btn" style="display:inline-block" onclick="generarListas()">Generar listas ✓</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/horarios.js?v=3"></script>
+
+</body>
+</html>
+
+

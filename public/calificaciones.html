@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Captura de Calificaciones</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Estilos base del sistema -->
+    <link rel="stylesheet" href="css/css.css">
+    <!-- Estilos específicos -->
+    <link rel="stylesheet" href="css/calificaciones.css">
+</head>
+<body>
+
+<div class="container-wide">
+    <div class="card card-wide">
+
+        <div class="header-row">
+            <div>
+                <a href="../index.html" class="btn-back" style="display: inline-flex; align-items: center; padding: 6px 12px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-weight: bold; text-decoration: none; margin-bottom: 12px; border: 1px solid #bfdbfe; font-size: 14px;">&larr; Volver al Menú</a>
+                <h1>📝 Captura de Calificaciones</h1>
+                <p class="subtitle">
+                    Evalúa a los alumnos en base a las actividades configuradas previamente y la asistencia.
+                </p>
+            </div>
+        </div>
+
+        <div class="config-panel">
+            <div class="form-group">
+                <label for="selectMateria">Materia</label>
+                <select id="selectMateria">
+                    <option value="" disabled selected>-- Selecciona Materia --</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="selectUnidad">Unidad / Parcial</label>
+                <select id="selectUnidad">
+                    <option value="1">Unidad 1</option>
+                    <option value="2">Unidad 2</option>
+                    <option value="3">Unidad 3</option>
+                    <option value="4">Unidad 4</option>
+                </select>
+            </div>
+
+            <button class="btn-load" onclick="loadEvaluationGrid()">🔄 Cargar Lista y Rúbrica</button>
+        </div>
+
+        <div id="evaluationArea" style="display: none;">
+            <!-- Resumen de estadísticas -->
+            <div class="stats-summary" id="statsSummary" style="display: flex; gap: 20px; margin-bottom: 20px; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <div class="stat-box" style="flex: 1; text-align: center;">
+                    <span id="pctPass" style="display: block; font-size: 24px; font-weight: bold; color: #059669;">0%</span>
+                    <label style="font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase;">Aprobados</label>
+                </div>
+                <div class="stat-box" style="flex: 1; text-align: center;">
+                    <span id="pctFail" style="display: block; font-size: 24px; font-weight: bold; color: #dc2626;">0%</span>
+                    <label style="font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase;">Reprobados</label>
+                </div>
+                <div class="stat-box" style="flex: 1; text-align: center;">
+                    <span id="numAbsences" style="display: block; font-size: 24px; font-weight: bold; color: #b91c1c;">0</span>
+                    <label style="font-size: 12px; color: #64748b; font-weight: 600; text-transform: uppercase;">En Riesgo (0% Asis)</label>
+                </div>
+            </div>
+
+            <div class="actions-row">
+                <button class="btn-save" onclick="saveGrades()">💾 Guardar Calificaciones</button>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="grid-notas" id="gradesTable">
+                    <thead id="gradesThead">
+                        <!-- Columnas dinámicas generadas en JS -->
+                    </thead>
+                    <tbody id="gradesTbody">
+                        <!-- Filas de alumnos generadas en JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+            <div class="icon">📊</div>
+            <p>Selecciona materia, grupo y unidad para comenzar a calificar.</p>
+        </div>
+
+    </div> <!-- end card -->
+</div> <!-- end container -->
+
+<!-- Contenedor para notificaciones -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/calificaciones.js"></script>
+
+</body>
+</html>
+
+
